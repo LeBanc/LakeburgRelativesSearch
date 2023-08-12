@@ -300,7 +300,7 @@ public class VillagersManager : MonoBehaviour
 
     // Level 3 Relationships (GreatGrandParents / StepGrandParents / GrandParentsInLaw / Piblings
     // StepSiblings / SiblingsInLaw / Niblings / GrandChildInLaw / StepGrandChild / GreatGrandChild / SiblingInLaw
-    // HalfSiblingInLaw / StepChildInLaw / StepGrandChild / PartnerExes)
+    // HalfSiblingInLaw / StepChildInLaw / StepGrandChild / PartnerExes / StepParentsInLaw)
     private void SearchGreatGrandParents(VillagerData v)
     {
         foreach(VillagerData v1 in v._grandParents)
@@ -367,9 +367,14 @@ public class VillagersManager : MonoBehaviour
             }
         }
         // Set partners of piblings as piblings
+        List<VillagerData> _pib = new List<VillagerData>();
         foreach (VillagerData v1 in v._piblings)
         {
-            if (v1._partner != null) { if (!v._piblings.Contains(v1._partner)) v._piblings.Add(v1._partner);}
+            if (v1._partner != null) _pib.Add(v1._partner);
+        }
+        foreach (VillagerData v1 in _pib)
+        {
+            if(!v._piblings.Contains(v1)) v._piblings.Add(v1);
         }
     }
     private void SearchStepSiblings(VillagerData v)
@@ -384,7 +389,16 @@ public class VillagersManager : MonoBehaviour
     }
     private void SearchSiblingsInLaw(VillagerData v)
     {
-        if(v._partner != null)
+        foreach (VillagerData v1 in v._siblings)
+        {
+            if(v1._partner != null) v._siblingsInLaw.Add(v1._partner);
+        }
+        foreach (VillagerData v1 in v._halfSiblings)
+        {
+            if (v1._partner != null) v._siblingsInLaw.Add(v1._partner);
+        }
+
+        if (v._partner != null)
         {
             foreach(VillagerData v1 in v._partner._siblings)
             {
@@ -394,6 +408,15 @@ public class VillagersManager : MonoBehaviour
             {
                 v._siblingsInLaw.Add(v1);
             }
+        }
+        List<VillagerData> _sib = new List<VillagerData> ();
+        foreach (VillagerData v1 in v._siblingsInLaw)
+        {
+            if (v1._partner != null) _sib.Add(v1._partner);
+        }
+        foreach (VillagerData v1 in _sib)
+        {
+            if (!v._siblings.Contains(v1) && !v._halfSiblings.Contains(v1) && !v._stepSiblings.Contains(v1) &&  !v._siblingsInLaw.Contains(v1)) v._siblingsInLaw.Add(v1);
         }
     }
     private void SearchNiblings(VillagerData v)
@@ -414,6 +437,13 @@ public class VillagersManager : MonoBehaviour
             }
         }
         foreach (VillagerData v1 in v._stepSiblings)
+        {
+            foreach (VillagerData v2 in v1._children)
+            {
+                if (!v._niblings.Contains(v2)) v._niblings.Add(v2);
+            }
+        }
+        foreach (VillagerData v1 in v._siblingsInLaw)
         {
             foreach (VillagerData v2 in v1._children)
             {
@@ -460,8 +490,7 @@ public class VillagersManager : MonoBehaviour
     }
     private void SearchStepChildInLaw(VillagerData v)
     {
-        if(v._partner == null) return;
-        foreach(VillagerData v1 in v._partner._stepChildren)
+        foreach(VillagerData v1 in v._stepChildren)
         {
             if(v1._partner != null) v._childrenInLaw.Add(v1._partner);
         }
@@ -478,6 +507,15 @@ public class VillagersManager : MonoBehaviour
         foreach(VillagerData v1 in v._childrenInLaw)
         {
             foreach (VillagerData v2 in v1._parents) v._coParentsInLaw.Add(v2);
+        }
+        List<VillagerData> _co = new List<VillagerData> ();
+        foreach (VillagerData v1 in v._coParentsInLaw)
+        {
+            if(v1._partner != null) _co.Add(v1._partner);
+        }
+        foreach (VillagerData v1 in _co)
+        {
+            if (!v._coParentsInLaw.Contains(v1)) v._coParentsInLaw.Add(v1);
         }
     }
 
@@ -513,6 +551,18 @@ public class VillagersManager : MonoBehaviour
             }
         }
     }
+    private void SearchStepParentsInLaw(VillagerData v)
+    {
+        List<VillagerData> _step = new List<VillagerData> ();
+        foreach (VillagerData v1 in v._parentsInLaw)
+        {
+            if (v1._partner != null) _step.Add(v1._partner);
+        }
+            foreach (VillagerData v2 in _step)
+        {
+            if(!v._parents.Contains(v2) && !v._parentsInLaw.Contains(v2)) v._parentsInLaw.Add(v2);
+        }
+    }
 
     // Search all villager relatives by batches (to allow step(n) relatives in step(n+1) search)
     public void SearchAllConnections()
@@ -546,6 +596,7 @@ public class VillagersManager : MonoBehaviour
             SearchStepChildInLaw(v);
             SearchForPartnerExes(v);
             SearchCoParentsInLaw(v);
+            SearchStepParentsInLaw(v);
         }
         foreach (VillagerData v in villagers)
         {
