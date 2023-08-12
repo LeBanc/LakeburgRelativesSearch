@@ -27,7 +27,9 @@ public class VillagerData : ScriptableObject
     public bool _isDead;
     [SerializeField]
     public int _deathYear;
-
+    [SerializeField]
+    public bool _isExiled;
+    
     [SerializeField]
     public VillagerData _mother;
     [SerializeField]
@@ -90,7 +92,7 @@ public class VillagerData : ScriptableObject
     
     
 
-    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, int age)
+    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age)
     {
         name = id;
         _id = id;
@@ -105,5 +107,6 @@ public class VillagerData : ScriptableObject
         _exesId = exesId;
         _isDead = isDead;
         _deathYear = birthYear + age;
+        _isExiled = isExiled;
     }
 }

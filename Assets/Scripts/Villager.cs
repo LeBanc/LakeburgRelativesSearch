@@ -62,7 +62,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     private void UpdateGraphics()
     {
         string nameText = villager._firstName + " " + villager._lastName;
-        string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear):"");
+        string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear):(villager._isExiled?" - ?":""));
         villagerName.text = nameText;
         villagerYears.text = yearText;
     }

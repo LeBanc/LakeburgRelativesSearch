@@ -132,7 +132,7 @@ public class RelativesManager : MonoBehaviour
         Init();
 
         // Villager Name
-        title.text = v._firstName + " " + v._lastName + " (" + v._birthYear.ToString() + " - " +  (v._isDead?v._deathYear.ToString():"") + ")";
+        title.text = v._firstName + " " + v._lastName + " (" + v._birthYear.ToString() + " - " +  (v._isDead?v._deathYear.ToString():(v._isExiled?"?":"")) + ")";
 
         // Gen-3
         gen_2Contener.gameObject.SetActive(true);

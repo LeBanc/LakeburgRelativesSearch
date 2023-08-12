@@ -313,7 +313,7 @@ public class LoadJSON : MonoBehaviour
         public FamilySerialized FamilySerialized;
         public IdentitySerialized IdentitySerialized;
         public bool IsDead;
-        public bool IsExile;
+        public bool IsExiled;
         public string LastWorkId;
         public LegacySerialized LegacySerialized;
         public ResourcesOwnerSerialized ResourcesOwnerSerialized;
@@ -827,7 +827,7 @@ public class LoadJSON : MonoBehaviour
 
         foreach (VillagerSerialized villager in save.TownManagerSerialized.VillagerOwnerSerialized.VillagersSerialized)
         {
-            // Debug.Log(villager.IdentitySerialized.SerializedNames.RomanFirstName + " " + villager.IdentitySerialized.SerializedNames.RomanLastName);
+            //Debug.Log(villager.IdentitySerialized.SerializedNames.RomanFirstName + " " + villager.IdentitySerialized.SerializedNames.RomanLastName;
             VillagerData v = ScriptableObject.CreateInstance<VillagerData>();
             v.CreateVillager(villager.IdentitySerialized.Id,
                               villager.IdentitySerialized.SerializedNames.RomanFirstName,
@@ -840,6 +840,7 @@ public class LoadJSON : MonoBehaviour
                               villager.LegacySerialized.GeneticSerialized.ChildsId,
                               villager.LegacySerialized.ExPartnersId,
                               villager.IsDead,
+                              villager.IsExiled,
                               villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age);
             villagersManager.villagers.Add(v);
         }
