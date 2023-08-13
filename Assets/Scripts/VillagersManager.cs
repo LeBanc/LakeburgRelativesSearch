@@ -537,8 +537,17 @@ public class VillagersManager : MonoBehaviour
         {
             foreach(VillagerData v2 in v1._children)
             {
-                if(!v._grandParents.Contains(v2)) v._grandPiblings.Add(v2);
+                if(!v._grandParents.Contains(v2) && !v._grandPiblings.Contains(v2)) v._grandPiblings.Add(v2);
             }
+        }
+        List<VillagerData> _gp = new List<VillagerData>();
+        foreach (VillagerData v1 in v._grandPiblings)
+        {
+            if (v1._partner != null) _gp.Add(v1._partner);
+        }
+        foreach (VillagerData v1 in _gp)
+        {
+            if (!v._grandPiblings.Contains(v1)) v._grandPiblings.Add(v1);
         }
     }
     private void SearchGrandNiblings(VillagerData v)
