@@ -135,10 +135,12 @@ public class RelativesManager : MonoBehaviour
         title.text = v._firstName + " " + v._lastName + " (" + v._birthYear.ToString() + " - " +  (v._isDead?v._deathYear.ToString():(v._isExiled?"?":"")) + ")";
 
         // Gen-3
-        gen_2Contener.gameObject.SetActive(true);
+        Debug.Log("Gen-3");
+        gen_3Contener.gameObject.SetActive(true);
         foreach (VillagerData v1 in v._greatGrandParents) greatGrandParentsContener.AddVillager(v1);
 
         // Gen -2
+        Debug.Log("Gen-2");
         gen_2Contener.gameObject.SetActive(true);
         foreach (VillagerData v1 in v._grandParents) grandParentsContener.AddVillager(v1);
         foreach (VillagerData v1 in v._stepGrandParents) stepGrandParentsContener.AddVillager(v1);
@@ -146,6 +148,7 @@ public class RelativesManager : MonoBehaviour
         foreach (VillagerData v1 in v._grandPiblings) grandPiblingsContener.AddVillager(v1);
 
         // Gen -1
+        Debug.Log("Gen-1");
         gen_1Contener.gameObject.SetActive(true);
         foreach (VillagerData v1 in v._parents) parentsContener.AddVillager(v1);
         foreach (VillagerData v1 in v._stepParents) stepParentsContener.AddVillager(v1);
@@ -153,6 +156,7 @@ public class RelativesManager : MonoBehaviour
         foreach (VillagerData v1 in v._piblings) piblingsContener.AddVillager(v1);
 
         // Gen 0
+        Debug.Log("Gen0");
         gen0Contener.gameObject.SetActive(true);
         if (v._partner != null) partnerContener.AddVillager(v._partner);
         foreach (VillagerData v1 in v._siblings) siblingsContener.AddVillager(v1);
@@ -165,6 +169,7 @@ public class RelativesManager : MonoBehaviour
         foreach (VillagerData v1 in v._coParentsInLaw) coParentsInLawContener.AddVillager(v1);
 
         // Gen 1
+        Debug.Log("Gen1");
         gen1Contener.gameObject.SetActive(true);
 
         foreach (VillagerData v1 in v._children) childrenContener.AddVillager(v1);
@@ -173,6 +178,7 @@ public class RelativesManager : MonoBehaviour
         foreach (VillagerData v1 in v._niblings) niblingsContener.AddVillager(v1);
 
         // Gen 2
+        Debug.Log("Gen2");
         gen2Contener.gameObject.SetActive(true);
         foreach (VillagerData v1 in v._grandChildren) grandChildrenContener.AddVillager(v1);
         foreach (VillagerData v1 in v._stepGrandChildren) stepGrandChildrenContener.AddVillager(v1);
@@ -180,6 +186,7 @@ public class RelativesManager : MonoBehaviour
         foreach (VillagerData v1 in v._grandNiblings) grandNiblingsContener.AddVillager(v1);
 
         // Gen 3
+        Debug.Log("Gen3");
         gen3Contener.gameObject.SetActive(true);
         foreach (VillagerData v1 in v._greatGrandChildren) greatGrandChildrenContener.AddVillager(v1);
 
