@@ -730,9 +730,10 @@ public class VillagersManager : MonoBehaviour
     private List<VillagerData> CombineLevel1Relatives(VillagerData v)
     {
         List<VillagerData> output = new List<VillagerData>();
-        foreach(VillagerData v2 in v._parents) { output.Add(v2); }
+        foreach(VillagerData v1 in v._parents) { output.Add(v1); }
         foreach (VillagerData v2 in v._children) { output.Add(v2); }
         if(v._partner != null) { output.Add(v._partner); }
+        foreach(VillagerData v3 in v._exes) {  output.Add(v3); }
         return output;
     }
     #endregion
