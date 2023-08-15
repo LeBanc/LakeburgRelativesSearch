@@ -13,7 +13,12 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 {
     public TMP_Text villagerName;
     public TMP_Text villagerYears;
+    public Image villagerOrigin;
     public VillagerData villager;
+
+    public Sprite fromLakeburg;
+    public Sprite fromTindra;
+    public Sprite fromNeighbourhood;
 
     private Image _image;
     private Button _button;
@@ -65,6 +70,18 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear):(villager._isExiled?" - ?":""));
         villagerName.text = nameText;
         villagerYears.text = yearText;
+        switch (villager._villagerOrigin)
+        {
+            case VillagerData.OriginEnum.Lakeburg:
+                villagerOrigin.sprite = fromLakeburg;
+                break;
+            case VillagerData.OriginEnum.Tindra:
+                villagerOrigin.sprite = fromTindra;
+                break;
+            case VillagerData.OriginEnum.Neighbourhood:
+                villagerOrigin.sprite = fromNeighbourhood;
+                break;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)

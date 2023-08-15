@@ -841,7 +841,8 @@ public class LoadJSON : MonoBehaviour
                               villager.LegacySerialized.ExPartnersId,
                               villager.IsDead,
                               villager.IsExiled,
-                              villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age);
+                              villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age,
+                              villager.VillagerScriptableId);
             villagersManager.villagers.Add(v);
         }
 

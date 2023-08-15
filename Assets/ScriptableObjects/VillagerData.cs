@@ -29,7 +29,10 @@ public class VillagerData : ScriptableObject
     public int _deathYear;
     [SerializeField]
     public bool _isExiled;
-    
+
+    [SerializeField]
+    public OriginEnum _villagerOrigin = OriginEnum.Lakeburg;
+
     [SerializeField]
     public VillagerData _mother;
     [SerializeField]
@@ -92,7 +95,7 @@ public class VillagerData : ScriptableObject
     
     
 
-    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age)
+    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age, string origin)
     {
         name = id;
         _id = id;
@@ -108,5 +111,26 @@ public class VillagerData : ScriptableObject
         _isDead = isDead;
         _deathYear = birthYear + age;
         _isExiled = isExiled;
+        switch(origin)
+        {
+            case "PeasantVillager":
+            case "NewBornVillager":
+                _villagerOrigin = OriginEnum.Lakeburg; break;
+            case "NeighbourManToDate":
+            case "NeighbourWomanToDate":
+                _villagerOrigin = OriginEnum.Tindra; break;
+            case "NeighbourManToRecruit":
+            case "NeighbourWomanToRecruit":
+                _villagerOrigin = OriginEnum.Neighbourhood; break;
+            default:
+                _villagerOrigin = OriginEnum.Lakeburg; break;
+        }
+    }
+
+    public enum OriginEnum
+    {
+        Lakeburg,
+        Tindra,
+        Neighbourhood
     }
 }
