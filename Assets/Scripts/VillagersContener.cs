@@ -12,6 +12,8 @@ public class VillagersContener : MonoBehaviour
 
     private bool _updateDisplay = false;
 
+    public static List<Villager> relatives = new List<Villager>();
+
     private void Start()
     {
         title.text = titleText;
@@ -56,6 +58,14 @@ public class VillagersContener : MonoBehaviour
             newVillager.SetDraggable(false);
             newVillager.SetClickable(true);
 
+            foreach (Villager v1 in relatives) {
+                if (v == v1.villager)
+                {
+                    v1.ShowWarning();
+                    newVillager.ShowWarning();
+                }
+            }
+            relatives.Add(newVillager);
         }
         _updateDisplay = true;
     }
@@ -70,7 +80,8 @@ public class VillagersContener : MonoBehaviour
                 Transform child = contener.GetChild(i);
                 if (child.GetComponent<Villager>().villager._id.Equals(v._id))
                 {
-                    DestroyImmediate(child.gameObject);
+                    relatives.Remove(child.GetComponent<Villager>());
+                    DestroyImmediate(child.gameObject);                    
                 }
             }
         }
@@ -88,6 +99,7 @@ public class VillagersContener : MonoBehaviour
                 DestroyImmediate(child.gameObject);
             }
         }
+        relatives.Clear();
         _updateDisplay = true;
     }
 

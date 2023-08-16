@@ -14,6 +14,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     public TMP_Text villagerName;
     public TMP_Text villagerYears;
     public Image villagerOrigin;
+    public Image warning;
     public VillagerData villager;
 
     public Sprite fromLakeburg;
@@ -43,6 +44,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         villager = v;
         name = villager.name;
         UpdateGraphics();
+        HideWarning();
     }
 
     public void SetDraggable(bool drag)
@@ -82,6 +84,15 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
                 villagerOrigin.sprite = fromNeighbourhood;
                 break;
         }
+    }
+
+    public void ShowWarning()
+    {
+        if (warning != null) warning.enabled = true;
+    }
+    public void HideWarning()
+    {
+        if (warning != null) warning.enabled = false;
     }
 
     public void OnDrag(PointerEventData eventData)
