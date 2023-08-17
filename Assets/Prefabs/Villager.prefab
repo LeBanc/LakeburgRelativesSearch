@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -233,10 +233,8 @@ MonoBehaviour:
   villagerYears: {fileID: 8864314876388608615}
   villagerOrigin: {fileID: 748664130683421930}
   warning: {fileID: 7874306709804063791}
+  background: {fileID: 6027594343843447903}
   villager: {fileID: 0}
-  fromLakeburg: {fileID: 21300000, guid: 0a8509899bed96d4c8793a97919996b0, type: 3}
-  fromTindra: {fileID: 21300000, guid: 47da29c3b95340d488dca281e78d5e11, type: 3}
-  fromNeighbourhood: {fileID: 21300000, guid: d276fde71c664e9488539d690ae024fe, type: 3}
 --- !u!114 &5561530220223604188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +314,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -6, y: -6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3609301891515362105
 CanvasRenderer:

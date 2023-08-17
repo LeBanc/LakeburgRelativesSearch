@@ -1,21 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
+[RequireComponent(typeof(Image))]
 public class DropContener : MonoBehaviour, IDropHandler
 {
     public Villager villagerPrefab;
     public CanvasScaler mainScaler;
     private float ratio;
+    private Image dropzone;
 
     private void Start()
     {
         // ratio = Mathf.Max(Screen.width / mainScaler.referenceResolution.x, Screen.height / mainScaler.referenceResolution.y);
         ratio = Screen.width / mainScaler.referenceResolution.x;
+        dropzone = GetComponent<Image>();
+        ThemeManager.ThemeChangeAddListener(ChangeTheme);
+        ChangeTheme();
+    }
+
+    private void ChangeTheme()
+    {
+        if (dropzone != null && ThemeManager._registeredTheme != null)
+        {
+            dropzone.sprite = ThemeManager._registeredTheme.dropZone;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        ThemeManager.ThemeChangeRemoveListener(ChangeTheme);
     }
 
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VillagersContener : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class VillagersContener : MonoBehaviour
     public string titleText;
 
     private bool _updateDisplay = false;
+    private Image _image;
 
     public static List<Villager> relatives = new List<Villager>();
 
     private void Start()
     {
         title.text = titleText;
+        _image = GetComponent<Image>();
+        ThemeManager.ThemeChangeAddListener(ChangeTheme);
+        ChangeTheme();
     }
 
     private IEnumerator UpdateDisplay()
@@ -110,5 +115,18 @@ public class VillagersContener : MonoBehaviour
             return contener.childCount;
         }
         return 0;
+    }
+
+    private void ChangeTheme()
+    {
+        if (ThemeManager._registeredTheme != null)
+        {
+            if(_image != null) _image.color = ThemeManager._registeredTheme.backgroundColor;
+            if (title != null) title.color = ThemeManager._registeredTheme.buttonFontColor;
+        }
+    }
+    private void OnDestroy()
+    {
+        ThemeManager.ThemeChangeRemoveListener(ChangeTheme);
     }
 }

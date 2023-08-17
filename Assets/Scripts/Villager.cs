@@ -1,10 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,11 +9,12 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     public TMP_Text villagerYears;
     public Image villagerOrigin;
     public Image warning;
+    public Image background;
     public VillagerData villager;
 
-    public Sprite fromLakeburg;
-    public Sprite fromTindra;
-    public Sprite fromNeighbourhood;
+    private Sprite fromLakeburg;
+    private Sprite fromTindra;
+    private Sprite fromNeighbourhood;
 
     private Image _image;
     private Button _button;
@@ -36,6 +31,8 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 
     private void Start()
     {
+        ThemeManager.ThemeChangeAddListener(ChangeTheme);
+        ChangeTheme();
         if (villager != null) UpdateGraphics();
     }
 
@@ -83,6 +80,9 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
             case VillagerData.OriginEnum.Neighbourhood:
                 villagerOrigin.sprite = fromNeighbourhood;
                 break;
+            default:
+                villagerOrigin.sprite = fromLakeburg;
+                break;
         }
     }
 
@@ -121,8 +121,45 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         }
     }
 
+    private void ChangeTheme()
+    {
+        if (ThemeManager._registeredTheme != null)
+        {
+            if(warning != null) warning.sprite = ThemeManager._registeredTheme.interrogationMark;
+            fromLakeburg = ThemeManager._registeredTheme.originTown;
+            fromNeighbourhood = ThemeManager._registeredTheme.originNeighbour;
+            fromTindra = ThemeManager._registeredTheme.originMarriage;
+            if (villagerName != null) villagerName.color = ThemeManager._registeredTheme.villagerFontColor;
+            if (villagerYears != null) villagerYears.color = ThemeManager._registeredTheme.villagerFontColor;
+            if (background != null) background.sprite = ThemeManager._registeredTheme.villagerBorder;
+            if (villager != null)
+            {
+                switch (villager._villagerOrigin)
+                {
+                    case VillagerData.OriginEnum.Lakeburg:
+                        villagerOrigin.sprite = fromLakeburg;
+                        break;
+                    case VillagerData.OriginEnum.Tindra:
+                        villagerOrigin.sprite = fromTindra;
+                        break;
+                    case VillagerData.OriginEnum.Neighbourhood:
+                        villagerOrigin.sprite = fromNeighbourhood;
+                        break;
+                    default:
+                        villagerOrigin.sprite = fromLakeburg;
+                        break;
+                }
+            }
+            else
+            {
+                villagerOrigin.sprite = fromLakeburg;
+            }
+        }
+    }
+
     private void OnDestroy()
     {
         _button.onClick.RemoveAllListeners();
+        ThemeManager.ThemeChangeRemoveListener(ChangeTheme);
     }
 }
