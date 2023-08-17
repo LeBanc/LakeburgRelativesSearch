@@ -6,8 +6,6 @@ using System.IO;
 
 public class LoadJSON : MonoBehaviour
 {
-    public TextAsset saveJSON;
-
     [Serializable]
     public class SaveFile
     {
