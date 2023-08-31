@@ -1,16 +1,30 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ThemeManager : MonoBehaviour
 {
-    public Theme currentTheme;
+    public TMP_Dropdown dropdown;
     public static Theme _registeredTheme;
+    private Theme currentTheme;
     private static UnityEvent _themeChanged = new UnityEvent();
+    public Theme lakeburg;
+    public Theme handdrawn;
 
-    // Start is called before the first frame update
     void Awake()
     {
         _registeredTheme = currentTheme;
+    }
+
+    private void Start()
+    {
+        if (dropdown != null)
+        {
+            dropdown.onValueChanged.AddListener(delegate {
+                ChangeTheme(dropdown.value);
+            });
+            ChangeTheme(dropdown.value);
+        }
     }
 
     // Update is called once per frame
@@ -20,6 +34,22 @@ public class ThemeManager : MonoBehaviour
         {
             _registeredTheme = currentTheme;
             _themeChanged.Invoke();            
+        }
+    }
+
+    public void ChangeTheme(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                currentTheme = handdrawn;
+                break;
+            case 1:
+                currentTheme = lakeburg;
+                break;
+            default:
+                currentTheme = handdrawn;
+                break;
         }
     }
 
