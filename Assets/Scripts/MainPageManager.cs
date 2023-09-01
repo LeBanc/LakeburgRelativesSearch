@@ -4,7 +4,7 @@ using TMPro;
 public class MainPageManager : MonoBehaviour
 {
     public DropContener relativesDrop;
-    public DropContener familyTreeDrop;
+    public DropContener magicalBookDrop;
     public DropContener comparisonDrop1;
     public DropContener comparisonDrop2;
     public TMP_Text relationCount;
@@ -12,15 +12,17 @@ public class MainPageManager : MonoBehaviour
     public CanvasHandler mainPageCanvas;
     public CanvasHandler relativesCanvas;
     public CanvasHandler graveyardCanvas;
-    // public CanvasHandler familyTreeCanvas;
+    public CanvasHandler magicalBookCanvas;
 
     private RelativesManager relativesManager;
     private VillagersManager villagersManager;
+    private MagicalBookManager magicalBookManager;
 
     private void Awake()
     {
         relativesManager = GetComponent<RelativesManager>();
         villagersManager = GetComponent<VillagersManager>();
+        magicalBookManager = GetComponent<MagicalBookManager>();
     }
 
     private void Start()
@@ -30,6 +32,7 @@ public class MainPageManager : MonoBehaviour
 
     public void BackToMainPage()
     {
+        magicalBookCanvas.HideCanvas();
         graveyardCanvas.HideCanvas();
         relativesCanvas.HideCanvas();
         mainPageCanvas.ShowCanvas();
@@ -73,10 +76,35 @@ public class MainPageManager : MonoBehaviour
         relationCount.text = result;
     }
 
+    public void OpenMagicalBook()
+    {
+        if (magicalBookDrop != null)
+        {
+            if (magicalBookDrop.transform.childCount > 0)
+            {
+                Villager v = magicalBookDrop.transform.GetChild(0).GetComponent<Villager>();
+                if (v != null)
+                {
+                    if(!v.villager._isDead)
+                    {
+                        magicalBookCanvas.ShowCanvas();
+                        magicalBookManager.UpdateMatches(v.villager);
+                        mainPageCanvas.HideCanvas();
+                    }
+                    else
+                    {
+                        v.ShowWarning();
+                    }                    
+                }
+            }
+
+        }
+    }
+
     public void ClearDropConteners()
     {
         relativesDrop.ClearAllChildren();
-        familyTreeDrop.ClearAllChildren();
+        magicalBookDrop.ClearAllChildren();
         comparisonDrop1.ClearAllChildren();
         comparisonDrop2.ClearAllChildren();
         relationCount.text = ""; ;

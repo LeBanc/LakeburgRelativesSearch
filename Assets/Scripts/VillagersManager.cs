@@ -753,7 +753,7 @@ public class VillagersManager : MonoBehaviour
 
     public List<VillagerData> FindAllBloodRelatedVillagers(VillagerData v)
     {
-        if (v == null) return new List<VillagerData>(); ;
+        if (v == null) return new List<VillagerData>();
 
         List<VillagerData> checkedVillagers = new List<VillagerData>();
         List<VillagerData> currentVillagers = new List<VillagerData>();
@@ -761,15 +761,20 @@ public class VillagersManager : MonoBehaviour
 
         checkedVillagers.Add(v);
         currentVillagersTemp.AddRange(CombineBloodRelatedLevel1Relatives(v));
-        while(true)
+        int index = 0;
+        while(index < 100)
         {
+            currentVillagers.Clear();
             foreach (VillagerData v2 in currentVillagersTemp)
             {
                 if (!checkedVillagers.Contains(v2)) currentVillagers.Add(v2);
             }
+            //Debug.Log(index + ": " + currentVillagers.Count);
             if (currentVillagers.Count < 1) break;
             checkedVillagers.AddRange(currentVillagers);
+            currentVillagersTemp.Clear();
             foreach (VillagerData v2 in currentVillagers) currentVillagersTemp.AddRange(CombineBloodRelatedLevel1Relatives(v2));
+            index++;
         }
         return checkedVillagers;
     }

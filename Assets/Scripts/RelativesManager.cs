@@ -48,15 +48,7 @@ public class RelativesManager : MonoBehaviour
     public Transform gen3Contener;
     public VillagersContener greatGrandChildrenContener;
 
-
     private bool isInit = false;
-    private bool isSet = false;
-    private VillagersManager villagersManager;
-
-    private void Start()
-    {
-        villagersManager = FindFirstObjectByType<VillagersManager>();
-    }
 
     private void Init()
     {
@@ -117,11 +109,6 @@ public class RelativesManager : MonoBehaviour
         {
             Init();
             isInit = true;
-        }
-        if(isInit && !isSet)
-        {
-            // UpdateRelatives(villagersManager.villagers[0]);
-            isSet = true;
         }
     }
 
