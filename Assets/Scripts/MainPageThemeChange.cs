@@ -10,6 +10,8 @@ public class MainPageThemeChange : MonoBehaviour
     public TMP_Text relativeCountLabel;
     public TMP_Text relativeCountText;
     public Image scrollView;
+    public Image graveyardImage;
+    public Image bookImage;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,8 @@ public class MainPageThemeChange : MonoBehaviour
             if (relativeCountLabel != null) relativeCountLabel.color = ThemeManager._registeredTheme.relativesTitleFontColor;
             if (relativeCountText != null) relativeCountText.color = ThemeManager._registeredTheme.relativesTitleFontColor;
             if (scrollView != null) scrollView.color = ThemeManager._registeredTheme.backgroundColor;
+            if (graveyardImage != null) graveyardImage.sprite = ThemeManager._registeredTheme.graveyard;
+            if (bookImage != null) bookImage.sprite = ThemeManager._registeredTheme.book;
         }
     }
     private void OnDestroy()

@@ -7,6 +7,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 {
     public TMP_Text villagerName;
     public TMP_Text villagerYears;
+    public TMP_Text villagerJob;
     public Image villagerOrigin;
     public Image warning;
     public Image background;
@@ -19,14 +20,16 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     private Image _image;
     private Button _button;
     private RelativesManager _relativesManager;
+    private MainPageManager _mainPageManager;
 
     private Vector3 beginDragPosition;
     private bool _isDraggable = true;
     private void Awake()
     {
         _image = GetComponent<Image>();
-        _relativesManager = FindFirstObjectByType<RelativesManager>();
         _button = GetComponent<Button>();
+        _relativesManager = FindFirstObjectByType<RelativesManager>();
+        _mainPageManager = FindFirstObjectByType<MainPageManager>();
     }
 
     private void Start()
@@ -42,6 +45,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         name = villager.name;
         UpdateGraphics();
         HideWarning();
+        //HideJob();
     }
 
     public void SetDraggable(bool drag)
@@ -53,7 +57,9 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     {
         if(click)
         {
+            if(_button == null) { Debug.Log("Button not found"); return; }
             _button.interactable = true;
+            _button.onClick.AddListener(() => _mainPageManager.relativesCanvas.ShowCanvas());
             _button.onClick.AddListener(() => _relativesManager.UpdateRelatives(villager));
         }
         else
@@ -69,6 +75,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear):(villager._isExiled?" - ?":""));
         villagerName.text = nameText;
         villagerYears.text = yearText;
+        villagerJob.text = villager._job;
         switch (villager._villagerOrigin)
         {
             case VillagerData.OriginEnum.Lakeburg:
@@ -93,6 +100,15 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     public void HideWarning()
     {
         if (warning != null) warning.enabled = false;
+    }
+
+    public void ShowJob()
+    {
+        if (villagerJob != null) villagerJob.enabled = true;
+    }
+    public void HideJob()
+    {
+        if (villagerJob != null) villagerJob.enabled = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -131,6 +147,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
             fromTindra = ThemeManager._registeredTheme.originMarriage;
             if (villagerName != null) villagerName.color = ThemeManager._registeredTheme.villagerFontColor;
             if (villagerYears != null) villagerYears.color = ThemeManager._registeredTheme.villagerFontColor;
+            if (villagerJob != null) villagerJob.color = ThemeManager._registeredTheme.villagerFontColor;
             if (background != null) background.sprite = ThemeManager._registeredTheme.villagerBorder;
             if (villager != null)
             {

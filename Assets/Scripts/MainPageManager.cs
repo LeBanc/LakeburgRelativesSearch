@@ -11,20 +11,26 @@ public class MainPageManager : MonoBehaviour
 
     public CanvasHandler mainPageCanvas;
     public CanvasHandler relativesCanvas;
+    public CanvasHandler graveyardCanvas;
     // public CanvasHandler familyTreeCanvas;
 
     private RelativesManager relativesManager;
     private VillagersManager villagersManager;
 
-    private void Start()
+    private void Awake()
     {
         relativesManager = GetComponent<RelativesManager>();
         villagersManager = GetComponent<VillagersManager>();
+    }
+
+    private void Start()
+    {
         BackToMainPage();
     }
 
     public void BackToMainPage()
     {
+        graveyardCanvas.HideCanvas();
         relativesCanvas.HideCanvas();
         mainPageCanvas.ShowCanvas();
     }

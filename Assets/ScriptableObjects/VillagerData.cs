@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Presets;
 using UnityEngine;
 
 public class VillagerData : ScriptableObject
@@ -92,10 +95,15 @@ public class VillagerData : ScriptableObject
     public List<VillagerData> _grandNiblings = new List<VillagerData>();    
     [SerializeField]
     public List<VillagerData> _greatGrandChildren = new List<VillagerData>();
-    
-    
 
-    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age, string origin)
+    [SerializeField]
+    public string[] _likedTopics = new string[3];
+    [SerializeField]
+    public string[] _dislikedTopics = new string[3];
+    [SerializeField]
+    public string _job = "";
+
+    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age, string origin, List<string> likedTopics, List<string> dislikedTopics, string job, bool isWorking)
     {
         name = id;
         _id = id;
@@ -125,6 +133,99 @@ public class VillagerData : ScriptableObject
             default:
                 _villagerOrigin = OriginEnum.Lakeburg; break;
         }
+
+        _likedTopics = likedTopics.ToArray();
+        _dislikedTopics = dislikedTopics.ToArray();
+
+        string tempJob = "";
+        bool apprentice = false;
+        if(job.Contains("Apprentice"))
+        {
+            apprentice = true;
+            job = job.Replace("Apprentice", "");
+        }
+
+        switch(job)
+        {
+            case "Ballroom": // TBC, maybe already Dancer in save file
+                tempJob = "Dancer";
+                break;
+            case "Banquet":
+                tempJob = "Taster";
+                break;
+            case "Bard's House": // TBC, maybe already Bard in save file
+                tempJob = "Bard";
+                break;
+            case "Barracks": // TBC, maybe already Guard in save file
+                tempJob = "Guard";
+                break;
+            case "Beggar":
+                tempJob = "Rat trainer";
+                break;
+            case "Church":
+                tempJob = _female ? "Priestess" : "Priest";
+                break;
+            case "Couturier":
+                tempJob = _female ? "Seamstress" : "Seamster";
+                break;
+            case "Fisherman":
+                tempJob = _female ? "Fisherwoman" : "Fisherman";
+                break;
+            case "Gambling Den": // TBC, maybe already Croupier in save file
+                tempJob = "Croupier";
+                break;
+            case "Harvester":
+                tempJob = "Gatherer";
+                break;
+            case "Hooker":
+                tempJob = _female ? "Lady of the evening" : "Man of the evening";
+                break;
+            case "Hunter":
+                tempJob = _female ? "Huntress" : "Hunter";
+                break;
+            case "Inn":
+                tempJob = "Innkeeper";
+                break;
+            case "Jousts": // TBC, maybe already Knight in save file
+                tempJob = "Knight";
+                break;
+            case "Killer":
+                tempJob = "Assassin";
+                break;
+            case "Manufacturer":
+                tempJob = "Carpenter";
+                break;
+            case "Nomad":
+                tempJob = "Prankster";
+                break;
+            case "Rancher":
+                tempJob = "Livestock farmer";
+                break;
+            case "School": // TBC, maybe already Teacher in save file
+                tempJob = "Teacher";
+                break;
+            case "Sovereign":
+                tempJob = _female ? "Queen" : "King";
+                break;
+            case "Stonecutter":
+                tempJob = "Mason";
+                break;
+            case "Theater":
+                tempJob = _female ? "Actress" : "Actor";
+                break;
+            case "Trader":
+                tempJob = "Merchant";
+                break;
+            case "Woodcutter":
+                tempJob = "Lumberjack";
+                break;
+            default:
+                tempJob = job;
+                break;
+        }
+        _job = tempJob;
+        if (apprentice) _job = _job + " Apprentice";
+        if (!_job.Equals("") && !isWorking) _job = "(" + _job + ")";
     }
 
     public enum OriginEnum

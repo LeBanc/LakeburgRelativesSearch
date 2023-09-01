@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -195,6 +196,22 @@ public class VillagersManager : MonoBehaviour
         return -v1._lastName.CompareTo(v2._lastName);
     }
 
+    public static int CompareByDeathYear(VillagerData v1, VillagerData v2)
+    {
+        if (v1 == null) return 1;
+        if (v2 == null) return -1;
+        if (!v1._isDead && !v2._isDead)
+        {
+            if (v1._birthYear < v2._birthYear) return -1;
+            if (v1._birthYear == v2._birthYear) return 0;
+            return 1;
+        }
+        if (!v1._isDead) return 1;
+        if (!v2._isDead) return -1;
+        if (v1._deathYear < v2._deathYear) return -1;
+        if (v1._deathYear == v2._deathYear) return 0;
+        return 1;
+    }
     #endregion
 
     #region Villager
@@ -731,6 +748,37 @@ public class VillagersManager : MonoBehaviour
         foreach (VillagerData v2 in v._children) { output.Add(v2); }
         if(v._partner != null) { output.Add(v._partner); }
         foreach(VillagerData v3 in v._exes) {  output.Add(v3); }
+        return output;
+    }
+
+    public List<VillagerData> FindAllBloodRelatedVillagers(VillagerData v)
+    {
+        if (v == null) return new List<VillagerData>(); ;
+
+        List<VillagerData> checkedVillagers = new List<VillagerData>();
+        List<VillagerData> currentVillagers = new List<VillagerData>();
+        List<VillagerData> currentVillagersTemp = new List<VillagerData>();
+
+        checkedVillagers.Add(v);
+        currentVillagersTemp.AddRange(CombineBloodRelatedLevel1Relatives(v));
+        while(true)
+        {
+            foreach (VillagerData v2 in currentVillagersTemp)
+            {
+                if (!checkedVillagers.Contains(v2)) currentVillagers.Add(v2);
+            }
+            if (currentVillagers.Count < 1) break;
+            checkedVillagers.AddRange(currentVillagers);
+            foreach (VillagerData v2 in currentVillagers) currentVillagersTemp.AddRange(CombineBloodRelatedLevel1Relatives(v2));
+        }
+        return checkedVillagers;
+    }
+
+    private List<VillagerData> CombineBloodRelatedLevel1Relatives(VillagerData v)
+    {
+        List<VillagerData> output = new List<VillagerData>();
+        foreach (VillagerData v1 in v._parents) { output.Add(v1); }
+        foreach (VillagerData v2 in v._children) { output.Add(v2); }
         return output;
     }
     #endregion

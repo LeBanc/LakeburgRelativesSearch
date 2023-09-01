@@ -37,4 +37,8 @@ public class Theme : ScriptableObject
     public Sprite originMarriage;
     [SerializeField]
     public Sprite interrogationMark;
+    [SerializeField]
+    public Sprite graveyard;
+    [SerializeField]
+    public Sprite book;
 }

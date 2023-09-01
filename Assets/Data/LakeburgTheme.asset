@@ -29,3 +29,5 @@ MonoBehaviour:
   originNeighbour: {fileID: 21300000, guid: d276fde71c664e9488539d690ae024fe, type: 3}
   originMarriage: {fileID: 21300000, guid: 47da29c3b95340d488dca281e78d5e11, type: 3}
   interrogationMark: {fileID: 21300000, guid: 33dab797579150748b48204a936c75ca, type: 3}
+  graveyard: {fileID: 21300000, guid: c6bb397bd8925e64db78175fcded544e, type: 3}
+  book: {fileID: 21300000, guid: c04cef62d9d16004e8cd6b7a0eb04507, type: 3}

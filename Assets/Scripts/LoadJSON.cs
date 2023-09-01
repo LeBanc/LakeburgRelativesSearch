@@ -3,6 +3,7 @@ using UnityEngine;
 using SimpleFileBrowser;
 using System.Collections;
 using System.IO;
+using System.Collections.Generic;
 
 public class LoadJSON : MonoBehaviour
 {
@@ -67,18 +68,18 @@ public class LoadJSON : MonoBehaviour
     [Serializable]
     public class BuildingOwnerSerialized
     {
-        public BuildingsSerialized[] BuildingsSerialized;
+        public BuildingSerialized[] BuildingsSerialized;
         public BuildingsTimelinesSerialized[] BuildingsTimelines;
         public bool IsAccessibleToPlayerSerialized;
     }
     [Serializable]
-    public class BuildingsSerialized
+    public class BuildingSerialized
     {
         public BuildingEffectsSerialized BuildingEffects;
         public bool IsBuilt;
-        public BuildingSlotSerialized[] BuildingSlots;
+        public BuildingSlotSerialized[] BuildingSlotsSerialized;
         public BuildingUpgradesSerialized BuildingUpgrades;
-        public StudentSlotsSerialized[] StudentSlotsSerialized;
+        public StudentSlotsGroupSerialized[] StudentSlotsGroupSerialized;
     }
     [Serializable]
     public class BuildingEffectsSerialized
@@ -121,9 +122,9 @@ public class LoadJSON : MonoBehaviour
         public int Level;
     }
     [Serializable]
-    public class StudentSlotsSerialized
+    public class StudentSlotsGroupSerialized
     {
-        public StudentSlotSerialized[] StudentSlotSerialized;
+        public StudentSlotSerialized[] StudentSlotsSerialized;
     }
     [Serializable]
     public class StudentSlotSerialized
@@ -771,6 +772,7 @@ public class LoadJSON : MonoBehaviour
     private VillagersManager villagersManager;
     private RelativesManager relativesManager;
     private MainPageManager mainPageManager;
+    private GraveyardManager graveyardManager;
 
 
     // Start is called before the first frame update
@@ -779,6 +781,7 @@ public class LoadJSON : MonoBehaviour
         villagersManager = FindFirstObjectByType<VillagersManager>();
         relativesManager = FindFirstObjectByType<RelativesManager>();
         mainPageManager = FindFirstObjectByType<MainPageManager>();
+        graveyardManager = FindFirstObjectByType<GraveyardManager>();
     }
 
     void Start()
@@ -823,8 +826,52 @@ public class LoadJSON : MonoBehaviour
         JsonUtility.FromJsonOverwrite(JSONString, save);
         // DumpToConsole(save.TownManagerSerialized.VillagerOwnerSerialized.VillagersSerialized[0]);
 
+        List<string> villagerAtWork = new List<string>();
+
+        foreach(BuildingSerialized building in save.TownManagerSerialized.BuildingOwnerSerialized.BuildingsSerialized)
+        {
+            if (building.BuildingSlotsSerialized != null)
+            {
+                foreach (BuildingSlotSerialized slot in building.BuildingSlotsSerialized)
+                {
+                    if (slot.VillagerId != null && !slot.VillagerId.Equals("")) villagerAtWork.Add(slot.VillagerId);
+                }
+            }
+            
+            if(building.StudentSlotsGroupSerialized != null)
+            {
+                foreach (StudentSlotsGroupSerialized slotGroup in building.StudentSlotsGroupSerialized)
+                {
+                    if(slotGroup.StudentSlotsSerialized != null)
+                    {
+                        foreach (StudentSlotSerialized slot in slotGroup.StudentSlotsSerialized)
+                        {
+                            if (slot.VillagerId != null && !slot.VillagerId.Equals("")) villagerAtWork.Add(slot.VillagerId);
+                        }
+                    }
+                }
+            }            
+        }
+
         foreach (VillagerSerialized villager in save.TownManagerSerialized.VillagerOwnerSerialized.VillagersSerialized)
         {
+            List<string> likedTopics = new List<string>();
+            List<string> dislikedTopics = new List<string>();
+
+            foreach (TopicSerialized topic in villager.TopicsOwnerSerialized.TopicsSerialized)
+            {
+                if(topic.IsLiked == true)
+                {
+                    likedTopics.Add(topic.Id);
+                }
+                else
+                {
+                    dislikedTopics.Add(topic.Id);
+                }
+            }
+
+            bool isWorking = villagerAtWork.Contains(villager.IdentitySerialized.Id);
+
             //Debug.Log(villager.IdentitySerialized.SerializedNames.RomanFirstName + " " + villager.IdentitySerialized.SerializedNames.RomanLastName;
             VillagerData v = ScriptableObject.CreateInstance<VillagerData>();
             v.CreateVillager(villager.IdentitySerialized.Id,
@@ -840,7 +887,11 @@ public class LoadJSON : MonoBehaviour
                               villager.IsDead,
                               villager.IsExiled,
                               villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age,
-                              villager.VillagerScriptableId);
+                              villager.VillagerScriptableId,
+                              likedTopics,
+                              dislikedTopics,
+                              villager.LastWorkId,
+                              isWorking);
             villagersManager.villagers.Add(v);
         }
 
@@ -852,6 +903,8 @@ public class LoadJSON : MonoBehaviour
 
         relativesManager.year.text = save.TimeManagerSerialized.CurrentDate.Substring(0, 4);
         mainPageManager.ClearDropConteners();
+        graveyardManager.year.text = save.TimeManagerSerialized.CurrentDate.Substring(0, 4);
+        graveyardManager.UpdateGraveyard();
     }
 
     public void LoadAndInitJson()
