@@ -16,6 +16,12 @@ public class Theme : ScriptableObject
     [SerializeField]
     public Color villagerFontColor;
     [SerializeField]
+    public Color sliderHandleColor;
+    [SerializeField]
+    public Color sliderPressedColor;
+    [SerializeField]
+    public Color sliderFillColor;
+    [SerializeField]
     public Sprite relativesBackground;
     [SerializeField]
     public Sprite dropZone;
@@ -38,7 +44,17 @@ public class Theme : ScriptableObject
     [SerializeField]
     public Sprite interrogationMark;
     [SerializeField]
+    public Sprite ring;
+    [SerializeField]
+    public Sprite blood;
+    [SerializeField]
+    public Sprite single;
+    [SerializeField]
     public Sprite graveyard;
     [SerializeField]
     public Sprite book;
+    [SerializeField]
+    public Sprite sliderHandle;
+    [SerializeField]
+    public Sprite sliderDisplay;
 }

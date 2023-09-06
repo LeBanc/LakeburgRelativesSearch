@@ -13,7 +13,6 @@ public class MainPageThemeChange : MonoBehaviour
     public Image graveyardImage;
     public Image bookImage;
 
-    // Start is called before the first frame update
     void Start()
     {
         ThemeManager.ThemeChangeAddListener(ChangeTheme);

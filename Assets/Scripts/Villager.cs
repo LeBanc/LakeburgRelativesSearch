@@ -10,7 +10,11 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     public TMP_Text villagerJob;
     public Image villagerOrigin;
     public Image warning;
+    public Image ring;
+    public Image bloodDrop;
+    public Image celib;
     public Image background;
+
     public VillagerData villager;
 
     private Sprite fromLakeburg;
@@ -20,6 +24,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     private Image _image;
     private Button _button;
     private RelativesManager _relativesManager;
+    private MagicalBookManager _magicalBookManager;
     private MainPageManager _mainPageManager;
 
     private Vector3 beginDragPosition;
@@ -29,6 +34,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         _image = GetComponent<Image>();
         _button = GetComponent<Button>();
         _relativesManager = FindFirstObjectByType<RelativesManager>();
+        _magicalBookManager = FindFirstObjectByType<MagicalBookManager>();
         _mainPageManager = FindFirstObjectByType<MainPageManager>();
     }
 
@@ -45,7 +51,9 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         name = villager.name;
         UpdateGraphics();
         HideWarning();
-        //HideJob();
+        HideRing();
+        HideBloodDrop();
+        HideCelib();
     }
 
     public void SetDraggable(bool drag)
@@ -53,14 +61,23 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         _isDraggable = drag;
     }
 
-    public void SetClickable(bool click)
+    public void SetClickable(bool click, bool book = false)
     {
         if(click)
         {
             if(_button == null) { Debug.Log("Button not found"); return; }
             _button.interactable = true;
-            _button.onClick.AddListener(() => _mainPageManager.relativesCanvas.ShowCanvas());
-            _button.onClick.AddListener(() => _relativesManager.UpdateRelatives(villager));
+            
+            if(book)
+            {
+                _button.onClick.AddListener(() => _mainPageManager.magicalBookCanvas.ShowCanvas());
+                _button.onClick.AddListener(() => _magicalBookManager.UpdateMatches(villager));
+            }
+            else
+            {
+                _button.onClick.AddListener(() => _mainPageManager.relativesCanvas.ShowCanvas());
+                _button.onClick.AddListener(() => _relativesManager.UpdateRelatives(villager));
+            }            
         }
         else
         {
@@ -72,7 +89,7 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     private void UpdateGraphics()
     {
         string nameText = villager._firstName + " " + villager._lastName;
-        string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear):(villager._isExiled?" - ?":""));
+        string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear + " (" + (villager._deathYear - villager._birthYear) + ")") :(villager._isExiled?" - ?":" (" + (villager._deathYear - villager._birthYear) + ")"));
         villagerName.text = nameText;
         villagerYears.text = yearText;
         villagerJob.text = villager._job;
@@ -100,6 +117,33 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     public void HideWarning()
     {
         if (warning != null) warning.enabled = false;
+    }
+
+    public void ShowRing()
+    {
+        if (ring != null) ring.gameObject.SetActive(true);
+    }
+    public void HideRing()
+    {
+        if (ring != null) ring.gameObject.SetActive(false);
+    }
+
+    public void ShowBloodDrop()
+    {
+        if (bloodDrop != null) bloodDrop.gameObject.SetActive(true);
+    }
+    public void HideBloodDrop()
+    {
+        if (bloodDrop != null) bloodDrop.gameObject.SetActive(false);
+    }
+
+    public void ShowCelib()
+    {
+        if (celib != null) celib.gameObject.SetActive(true);
+    }
+    public void HideCelib()
+    {
+        if (celib != null) celib.gameObject.SetActive(false);
     }
 
     public void ShowJob()
@@ -141,7 +185,10 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     {
         if (ThemeManager._registeredTheme != null)
         {
-            if(warning != null) warning.sprite = ThemeManager._registeredTheme.interrogationMark;
+            if (warning != null) warning.sprite = ThemeManager._registeredTheme.interrogationMark;
+            if (ring != null) ring.sprite = ThemeManager._registeredTheme.ring;
+            if (bloodDrop != null) bloodDrop.sprite = ThemeManager._registeredTheme.blood;
+            if (celib != null) celib.sprite = ThemeManager._registeredTheme.single;
             fromLakeburg = ThemeManager._registeredTheme.originTown;
             fromNeighbourhood = ThemeManager._registeredTheme.originNeighbour;
             fromTindra = ThemeManager._registeredTheme.originMarriage;

@@ -12,7 +12,6 @@ public class DropContener : MonoBehaviour, IDropHandler
 
     private void Start()
     {
-        // ratio = Mathf.Max(Screen.width / mainScaler.referenceResolution.x, Screen.height / mainScaler.referenceResolution.y);
         ratio = Screen.width / mainScaler.referenceResolution.x;
         dropzone = GetComponent<Image>();
         ThemeManager.ThemeChangeAddListener(ChangeTheme);
@@ -35,7 +34,6 @@ public class DropContener : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        // ratio = Mathf.Max(Screen.width / mainScaler.referenceResolution.x, Screen.height / mainScaler.referenceResolution.y);
         ratio = Screen.width / mainScaler.referenceResolution.x;
         ClearAllChildren();
         Villager newVillager = Instantiate<Villager>(villagerPrefab, transform);

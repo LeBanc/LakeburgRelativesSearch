@@ -18,6 +18,9 @@ MonoBehaviour:
   relativesTitleFontColor: {r: 0, g: 0, b: 0, a: 1}
   yearFontColor: {r: 0.38039216, g: 0.21568628, b: 0.23137255, a: 1}
   villagerFontColor: {r: 0, g: 0, b: 0, a: 1}
+  sliderHandleColor: {r: 0.96862745, g: 0.8901961, b: 0.80784315, a: 1}
+  sliderPressedColor: {r: 0.7607843, g: 0.69803923, b: 0.63529414, a: 1}
+  sliderFillColor: {r: 0.654902, g: 0.54901963, b: 0.47843137, a: 1}
   relativesBackground: {fileID: 21300000, guid: 37d96db8259193c4cb29478df5697879, type: 3}
   dropZone: {fileID: 21300000, guid: ff7cfcc56be4a6e41aea84c0c5e96ff5, type: 3}
   button: {fileID: 21300000, guid: 6668fbadfcd734d4e9bb79c3754a8ac6, type: 3}
@@ -29,5 +32,10 @@ MonoBehaviour:
   originNeighbour: {fileID: 21300000, guid: d276fde71c664e9488539d690ae024fe, type: 3}
   originMarriage: {fileID: 21300000, guid: 47da29c3b95340d488dca281e78d5e11, type: 3}
   interrogationMark: {fileID: 21300000, guid: 33dab797579150748b48204a936c75ca, type: 3}
+  ring: {fileID: 21300000, guid: 29a63f625099b144b8e5e071ce74b151, type: 3}
+  blood: {fileID: 21300000, guid: 6da4a98c80ce517489d5cea4305c5f6f, type: 3}
+  single: {fileID: 21300000, guid: 15a81d7c34e85094ab033e7e6328b652, type: 3}
   graveyard: {fileID: 21300000, guid: c6bb397bd8925e64db78175fcded544e, type: 3}
   book: {fileID: 21300000, guid: c04cef62d9d16004e8cd6b7a0eb04507, type: 3}
+  sliderHandle: {fileID: 21300000, guid: 2b874b3143c6d5c4693cb338beaed00b, type: 3}
+  sliderDisplay: {fileID: 21300000, guid: 2fb9dbbbe49fd244db447692a4c6655f, type: 3}

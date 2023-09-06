@@ -27,7 +27,6 @@ public class ThemeManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(_registeredTheme != currentTheme)

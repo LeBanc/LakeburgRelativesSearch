@@ -11,15 +11,10 @@ public class MagicalBookThemeChange : MonoBehaviour
     public Image cross;
     public Image dropzone;
 
-    public Image match3;
-    public Image match2;
-    public Image match1;
-    public Image match0;
-    public Image match_1;
-    public Image match_2;
-    public Image match_3;
+    public Image goodMatches;
+    public Image neutralMatches;
+    public Image badMatches;
 
-    // Start is called before the first frame update
     void Start()
     {
         ThemeManager.ThemeChangeAddListener(ChangeTheme);
@@ -37,13 +32,9 @@ public class MagicalBookThemeChange : MonoBehaviour
             if (cross != null) cross.sprite = ThemeManager._registeredTheme.cross;
             if (dropzone != null) dropzone.sprite = ThemeManager._registeredTheme.dropZone;
 
-            if (match3 != null) match3.color = ThemeManager._registeredTheme.backgroundColor;
-            if (match2 != null) match2.color = ThemeManager._registeredTheme.backgroundColor;
-            if (match1 != null) match1.color = ThemeManager._registeredTheme.backgroundColor;
-            if (match0 != null) match0.color = ThemeManager._registeredTheme.backgroundColor;
-            if (match_1 != null) match_1.color = ThemeManager._registeredTheme.backgroundColor;
-            if (match_2 != null) match_2.color = ThemeManager._registeredTheme.backgroundColor;
-            if (match_3 != null) match_3.color = ThemeManager._registeredTheme.backgroundColor;
+            if (goodMatches != null) goodMatches.color = ThemeManager._registeredTheme.backgroundColor;
+            if (neutralMatches != null) neutralMatches.color = ThemeManager._registeredTheme.backgroundColor;
+            if (badMatches != null) badMatches.color = ThemeManager._registeredTheme.backgroundColor;
         }
     }
     private void OnDestroy()

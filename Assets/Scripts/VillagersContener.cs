@@ -53,7 +53,7 @@ public class VillagersContener : MonoBehaviour
         }
     }
 
-    public void AddVillager(VillagerData v)
+    public void AddVillager(VillagerData v, bool ring = false, bool blood = false, bool single = false, bool book = false)
     {
         gameObject.SetActive(true);
         if (contener != null && villagerPrefab != null)
@@ -61,7 +61,11 @@ public class VillagersContener : MonoBehaviour
             Villager newVillager = Instantiate(villagerPrefab, contener);
             newVillager.SetVillager(v);
             newVillager.SetDraggable(false);
-            newVillager.SetClickable(true);
+            newVillager.SetClickable(true, book);
+
+            if (ring) newVillager.ShowRing();
+            if (blood) newVillager.ShowBloodDrop();
+            if (single) newVillager.ShowCelib();
 
             foreach (Villager v1 in relatives) {
                 if (v == v1.villager)

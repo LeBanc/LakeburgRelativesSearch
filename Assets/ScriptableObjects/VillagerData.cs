@@ -153,12 +153,6 @@ public class VillagerData : ScriptableObject
             case "Banquet":
                 tempJob = "Taster";
                 break;
-            case "Bard's House": // TBC, maybe already Bard in save file
-                tempJob = "Bard";
-                break;
-            case "Barracks": // TBC, maybe already Guard in save file
-                tempJob = "Guard";
-                break;
             case "Beggar":
                 tempJob = "Rat trainer";
                 break;
@@ -186,7 +180,7 @@ public class VillagerData : ScriptableObject
             case "Inn":
                 tempJob = "Innkeeper";
                 break;
-            case "Jousts": // TBC, maybe already Knight in save file
+            case "Jousting":
                 tempJob = "Knight";
                 break;
             case "Killer":
@@ -201,7 +195,7 @@ public class VillagerData : ScriptableObject
             case "Rancher":
                 tempJob = "Livestock farmer";
                 break;
-            case "School": // TBC, maybe already Teacher in save file
+            case "School":
                 tempJob = "Teacher";
                 break;
             case "Sovereign":
@@ -224,7 +218,7 @@ public class VillagerData : ScriptableObject
                 break;
         }
         _job = tempJob;
-        if (apprentice) _job = _job + " Apprentice";
+        if (apprentice) _job = "Apprentice " + _job;
         if (!_job.Equals("") && !isWorking) _job = "(" + _job + ")";
     }
 

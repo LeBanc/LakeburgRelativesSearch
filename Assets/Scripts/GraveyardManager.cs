@@ -26,20 +26,22 @@ public class GraveyardManager : MonoBehaviour
             Transform child = contener.GetChild(i);
             DestroyImmediate(child.gameObject);
         }
-
+        
+        // Add dead villagers to the list of dead people and sort them by year of death
         List<VillagerData> deadVillagers = new List<VillagerData>();
-
         foreach(VillagerData v in villagersManager.villagers)
         {
             if(v._isDead) deadVillagers.Add(v);
         }
-
         deadVillagers.Sort(VillagersManager.CompareByDeathYear);
 
+        // Add dead villagers to graveyard
         foreach(VillagerData v in deadVillagers)
         {
             AddVillager(v);
         }
+
+        // Hide canvas after init
         graveyardCanvas.HideCanvas();
     }
 
@@ -51,7 +53,6 @@ public class GraveyardManager : MonoBehaviour
             newVillager.SetVillager(v);
             newVillager.SetDraggable(false);
             newVillager.SetClickable(true);
-            newVillager.ShowJob();
         }
     }
 }

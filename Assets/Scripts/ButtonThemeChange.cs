@@ -6,7 +6,6 @@ public class ButtonThemeChange : MonoBehaviour
 {
     private Image button;
 
-    // Start is called before the first frame update
     void Start()
     {
         button = GetComponent<Image>();

@@ -19,8 +19,7 @@ public class CanvasHandler : MonoBehaviour
 
     public void HideCanvas()
     {
-        // raycaster.enabled = false;
-        // gameObject.SetActive(false);
+        // To avoid errors on children objects disabled while they still have some things to do: wait for end of frame
         StartCoroutine(HideAfterCoroutines());
     }
 

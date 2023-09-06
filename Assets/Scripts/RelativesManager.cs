@@ -1,11 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RelativesManager : MonoBehaviour
 {
     public TMP_Text title;
     public TMP_Text year;
+    public Image origin;
 
     public Transform gen_3Contener;
     public VillagersContener greatGrandParentsContener;
@@ -49,6 +52,22 @@ public class RelativesManager : MonoBehaviour
     public VillagersContener greatGrandChildrenContener;
 
     private bool isInit = false;
+    private VillagersManager villagersManager;
+    private Sprite fromLakeburg;
+    private Sprite fromTindra;
+    private Sprite fromNeighbourhood;
+
+    private void Start()
+    {
+        villagersManager = FindFirstObjectByType<VillagersManager>();
+    }
+
+    public void SetOriginImages(Sprite lakeburg, Sprite tindra, Sprite neighbor)
+    {
+        fromLakeburg = lakeburg;
+        fromTindra = tindra;
+        fromNeighbourhood = neighbor;
+    }
 
     private void Init()
     {
@@ -100,7 +119,7 @@ public class RelativesManager : MonoBehaviour
         greatGrandChildrenContener.ClearVillagers();
         gen3Contener.gameObject.SetActive(false);
 
-        StartCoroutine(UpdateRelativesDisplay());
+        // StartCoroutine(UpdateRelativesDisplay());
     }
 
     private void Update()
@@ -119,55 +138,72 @@ public class RelativesManager : MonoBehaviour
 
         // Villager Name
         title.text = v._firstName + " " + v._lastName + " (" + v._birthYear.ToString() + " - " +  (v._isDead?v._deathYear.ToString():(v._isExiled?"?":"")) + ")";
+        switch (v._villagerOrigin)
+        {
+            case VillagerData.OriginEnum.Lakeburg:
+                origin.sprite = fromLakeburg;
+                break;
+            case VillagerData.OriginEnum.Tindra:
+                origin.sprite = fromTindra;
+                break;
+            case VillagerData.OriginEnum.Neighbourhood:
+                origin.sprite = fromNeighbourhood;
+                break;
+            default:
+                origin.sprite = fromLakeburg;
+                break;
+        }
+
+        List<VillagerData> bloodRelated = villagersManager.FindAllBloodRelatedVillagers(v);
 
         // Gen-3
         gen_3Contener.gameObject.SetActive(true);
-        foreach (VillagerData v1 in v._greatGrandParents) greatGrandParentsContener.AddVillager(v1);
+        foreach (VillagerData v1 in v._greatGrandParents) greatGrandParentsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         // Gen -2
         gen_2Contener.gameObject.SetActive(true);
-        foreach (VillagerData v1 in v._grandParents) grandParentsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._stepGrandParents) stepGrandParentsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._grandParentsInLaw) grandParentsInLawContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._grandPiblings) grandPiblingsContener.AddVillager(v1);
+        foreach (VillagerData v1 in v._grandParents) grandParentsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._stepGrandParents) stepGrandParentsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._grandParentsInLaw) grandParentsInLawContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._grandPiblings) grandPiblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         // Gen -1
         gen_1Contener.gameObject.SetActive(true);
-        foreach (VillagerData v1 in v._parents) parentsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._stepParents) stepParentsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._parentsInLaw) parentsInLawContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._piblings) piblingsContener.AddVillager(v1);
+        foreach (VillagerData v1 in v._parents) parentsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._stepParents) stepParentsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._parentsInLaw) parentsInLawContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._piblings) piblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         // Gen 0
         gen0Contener.gameObject.SetActive(true);
-        if (v._partner != null) partnerContener.AddVillager(v._partner);
-        foreach (VillagerData v1 in v._siblings) siblingsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._halfSiblings) halfSiblingsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._stepSiblings) stepSiblingsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._cousins) cousinsContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._siblingsInLaw) siblingsInLawContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._exes) exesContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._partnerExes) partnerExesContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._coParentsInLaw) coParentsInLawContener.AddVillager(v1);
+        if (v._partner != null) partnerContener.AddVillager(v._partner, true, bloodRelated.Contains(v._partner));
+        foreach (VillagerData v1 in v._siblings) siblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._halfSiblings) halfSiblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._stepSiblings) stepSiblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._cousins) cousinsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._siblingsInLaw) siblingsInLawContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._exes) exesContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._partnerExes) partnerExesContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._coParentsInLaw) coParentsInLawContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         // Gen 1
         gen1Contener.gameObject.SetActive(true);
 
-        foreach (VillagerData v1 in v._children) childrenContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._stepChildren) stepChildrenContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._childrenInLaw) childrenInLawContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._niblings) niblingsContener.AddVillager(v1);
+        foreach (VillagerData v1 in v._children) childrenContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._stepChildren) stepChildrenContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._childrenInLaw) childrenInLawContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._niblings) niblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         // Gen 2
         gen2Contener.gameObject.SetActive(true);
-        foreach (VillagerData v1 in v._grandChildren) grandChildrenContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._stepGrandChildren) stepGrandChildrenContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._grandChildrenInLaw) grandChildrenInLawContener.AddVillager(v1);
-        foreach (VillagerData v1 in v._grandNiblings) grandNiblingsContener.AddVillager(v1);
+        foreach (VillagerData v1 in v._grandChildren) grandChildrenContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._stepGrandChildren) stepGrandChildrenContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._grandChildrenInLaw) grandChildrenInLawContener.AddVillager(v1, false, bloodRelated.Contains(v1));
+        foreach (VillagerData v1 in v._grandNiblings) grandNiblingsContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         // Gen 3
         gen3Contener.gameObject.SetActive(true);
-        foreach (VillagerData v1 in v._greatGrandChildren) greatGrandChildrenContener.AddVillager(v1);
+        foreach (VillagerData v1 in v._greatGrandChildren) greatGrandChildrenContener.AddVillager(v1, false, bloodRelated.Contains(v1));
 
         StartCoroutine(UpdateRelativesDisplay());
     }

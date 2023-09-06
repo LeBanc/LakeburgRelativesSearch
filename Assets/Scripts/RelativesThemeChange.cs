@@ -34,9 +34,11 @@ public class RelativesThemeChange : MonoBehaviour
     public Image g3Panel;
     public TMP_Text g3PanelText;
 
-    // Start is called before the first frame update
+    private RelativesManager relativesManager;
+
     void Start()
     {
+        relativesManager = FindObjectOfType<RelativesManager>();
         ThemeManager.ThemeChangeAddListener(ChangeTheme);
         ChangeTheme();
     }
@@ -72,6 +74,8 @@ public class RelativesThemeChange : MonoBehaviour
             if (g3 != null) g3.color = ThemeManager._registeredTheme.backgroundColor;
             if (g3Panel != null) g3Panel.color = ThemeManager._registeredTheme.backgroundColor;
             if (g3PanelText != null) g3PanelText.color = ThemeManager._registeredTheme.villagerFontColor;
+
+            if (relativesManager != null) relativesManager.SetOriginImages(ThemeManager._registeredTheme.originTown, ThemeManager._registeredTheme.originMarriage, ThemeManager._registeredTheme.originNeighbour);
         }
     }
     private void OnDestroy()

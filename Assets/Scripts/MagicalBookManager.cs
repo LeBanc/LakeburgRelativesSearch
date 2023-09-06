@@ -10,18 +10,26 @@ public class MagicalBookManager : MonoBehaviour
     public TMP_Text year;
     public Villager selectedVillager;
 
-    public VillagersContener perfectContener;
-    public VillagersContener awesomeContener;
-    public VillagersContener goodContener;
-    public VillagersContener neutralContener;
-    public VillagersContener badContener;
-    public VillagersContener horribleContener;
-    public VillagersContener awefulContener;
-
+    public VillagersContener match6Contener;
+    public VillagersContener match5Contener;
+    public VillagersContener match4Contener;
+    public VillagersContener match3Contener;
+    public VillagersContener match2Contener;
+    public VillagersContener match1Contener;
+    public VillagersContener match0Contener;
+    public VillagersContener match_1Contener;
+    public VillagersContener match_2Contener;
+    public VillagersContener match_3Contener;
+    public VillagersContener match_4Contener;
+    public VillagersContener match_5Contener;
+    public VillagersContener match_6Contener;
+    
     private bool isInit = false;
     private VillagersManager villagersManager;
 
     private bool onlyRemoveBloodRelated = false;
+    private int ageThreshold = 25;
+    private int ageThresholdChild = 3;
 
     private void Start()
     {
@@ -30,13 +38,19 @@ public class MagicalBookManager : MonoBehaviour
 
     private void Init()
     {
-        perfectContener.ClearVillagers();
-        awesomeContener.ClearVillagers();
-        goodContener.ClearVillagers();
-        neutralContener.ClearVillagers();
-        badContener.ClearVillagers();
-        horribleContener.ClearVillagers();
-        awefulContener.ClearVillagers();
+        match0Contener.ClearVillagers();
+        match6Contener.ClearVillagers();
+        match5Contener.ClearVillagers();
+        match4Contener.ClearVillagers();
+        match3Contener.ClearVillagers();
+        match2Contener.ClearVillagers();
+        match1Contener.ClearVillagers();
+        match_1Contener.ClearVillagers();
+        match_2Contener.ClearVillagers();
+        match_3Contener.ClearVillagers();
+        match_4Contener.ClearVillagers();
+        match_5Contener.ClearVillagers();
+        match_6Contener.ClearVillagers();
     }
 
     private void Update()
@@ -50,19 +64,59 @@ public class MagicalBookManager : MonoBehaviour
         }
     }
 
+    public void UpdateBloodRelated(int value)
+    {
+        if(value > 0)
+        {
+            onlyRemoveBloodRelated = true;
+        }
+        else
+        {
+            onlyRemoveBloodRelated = false;
+        }
+        UpdateMatches(selectedVillager.villager);
+    }
+
+    public void UpdateAgeThreshold(float value)
+    {
+        ageThreshold = (int)value;
+        UpdateMatches(selectedVillager.villager);
+    }
+
     public void UpdateMatches(VillagerData v)
     {
         Init();
 
-        selectedVillager.SetVillager(v);
+        if (selectedVillager.villager != v)
+        {
+            selectedVillager.SetVillager(v);
+            selectedVillager.SetClickable(true);
+            if(v._partner != null)
+            {
+                selectedVillager.ShowRing();
+            }
+            else
+            {
+                selectedVillager.ShowCelib();
+            }
+        }
 
-        List<VillagerData> perfectMatches = new List<VillagerData>();
-        List<VillagerData> awesomeMatches = new List<VillagerData>();
-        List<VillagerData> goodMatches = new List<VillagerData>();
-        List<VillagerData> neutralMatches = new List<VillagerData>();
-        List<VillagerData> badMatches = new List<VillagerData>();
-        List<VillagerData> horribleMatches = new List<VillagerData>();
-        List<VillagerData> awefulMatches = new List<VillagerData>();
+        int actualAgeThreshold = ageThreshold;
+        if ((v._deathYear - v._birthYear) < 18) actualAgeThreshold = Mathf.Min(actualAgeThreshold, ageThresholdChild);
+
+        List<VillagerData> match6 = new List<VillagerData>();
+        List<VillagerData> match5 = new List<VillagerData>();
+        List<VillagerData> match4 = new List<VillagerData>();
+        List<VillagerData> match3 = new List<VillagerData>();
+        List<VillagerData> match2 = new List<VillagerData>();
+        List<VillagerData> match1 = new List<VillagerData>();
+        List<VillagerData> match0 = new List<VillagerData>();
+        List<VillagerData> match_1 = new List<VillagerData>();
+        List<VillagerData> match_2 = new List<VillagerData>();
+        List<VillagerData> match_3 = new List<VillagerData>();
+        List<VillagerData> match_4 = new List<VillagerData>();
+        List<VillagerData> match_5 = new List<VillagerData>();
+        List<VillagerData> match_6 = new List<VillagerData>();
 
         List<VillagerData> bloodRelated = villagersManager.FindAllBloodRelatedVillagers(v);
         List<VillagerData> otherRelatives = new List<VillagerData>();
@@ -98,6 +152,9 @@ public class MagicalBookManager : MonoBehaviour
             {
                 if (otherRelatives.Contains(v1)) continue;
             }
+            float tempAgeThreshold = actualAgeThreshold;
+            if ((v1._deathYear - v1._birthYear) < 18) tempAgeThreshold = Mathf.Min(tempAgeThreshold, ageThresholdChild);
+            if (Mathf.Abs(v1._birthYear - v._birthYear) > tempAgeThreshold) continue;
 
             int loveMeter = 0;
             foreach(string topic in v1._likedTopics)
@@ -113,29 +170,48 @@ public class MagicalBookManager : MonoBehaviour
 
             switch(loveMeter)
             {
+                case 6:
+                    match6.Add(v1);
+                    break;
+                case 5:
+                    match5.Add(v1);
+                    break;
+                case 4:
+                    match4.Add(v1);
+                    break;
                 case 3:
-                    perfectMatches.Add(v1);
+                    match3.Add(v1);
                     break;
                 case 2:
-                    awesomeMatches.Add(v1);
+                    match2.Add(v1);
                     break;
                 case 1:
-                    goodMatches.Add(v1);
+                    match1.Add(v1);
                     break;
                 case 0:
-                    neutralMatches.Add(v1);
+                    match0.Add(v1);
                     break;
                 case -1:
-                    badMatches.Add(v1);
+                    match_1.Add(v1);
                     break;
                 case -2:
-                    horribleMatches.Add(v1);
+                    match_2.Add(v1);
                     break;
                 case -3:
-                    awefulMatches.Add(v1);
+                    match_3.Add(v1);
                     break;
+                case -4:
+                    match_4.Add(v1);
+                    break;
+                case -5:
+                    match_5.Add(v1);
+                    break;
+                case -6:
+                    match_6.Add(v1);
+                    break;
+
                 default:
-                    neutralMatches.Add(v1);
+                    match0.Add(v1);
                     break;
             }
         }
@@ -143,18 +219,18 @@ public class MagicalBookManager : MonoBehaviour
         // Villager Name
         title.text = v._firstName + " " + v._lastName + " (" + v._birthYear.ToString() + " - " + (v._isDead ? v._deathYear.ToString() : (v._isExiled ? "?" : "")) + ")";
 
-        foreach (VillagerData v1 in perfectMatches) perfectContener.AddVillager(v1);
-
-        foreach (VillagerData v1 in awesomeMatches) awesomeContener.AddVillager(v1);
-
-        foreach (VillagerData v1 in goodMatches) goodContener.AddVillager(v1);
-
-        foreach (VillagerData v1 in neutralMatches) neutralContener.AddVillager(v1);
-
-        foreach (VillagerData v1 in badMatches) badContener.AddVillager(v1);
-
-        foreach (VillagerData v1 in horribleMatches) horribleContener.AddVillager(v1);
-
-        foreach (VillagerData v1 in awefulMatches) awefulContener.AddVillager(v1);
+        foreach (VillagerData v1 in match6) match6Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match5) match5Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match4) match4Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match3) match3Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match2) match2Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match1) match1Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match0) match0Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match_1) match_1Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match_2) match_2Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match_3) match_3Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match_4) match_4Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match_5) match_5Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
+        foreach (VillagerData v1 in match_6) match_6Contener.AddVillager(v1, v._partner == v1, bloodRelated.Contains(v1), v1._partner == null, true);
     }
 }

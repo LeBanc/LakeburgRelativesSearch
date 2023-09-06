@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class LoadJSON : MonoBehaviour
 {
+    #region Savefile Definition
     [Serializable]
     public class SaveFile
     {
@@ -768,29 +769,34 @@ public class LoadJSON : MonoBehaviour
         public int MinorVersion;
         public int FixVersion;
     }
+    #endregion
 
     private VillagersManager villagersManager;
     private RelativesManager relativesManager;
     private MainPageManager mainPageManager;
     private GraveyardManager graveyardManager;
+    private MagicalBookManager magicalBookManager;
 
 
-    // Start is called before the first frame update
     void Awake()
     {
         villagersManager = FindFirstObjectByType<VillagersManager>();
         relativesManager = FindFirstObjectByType<RelativesManager>();
         mainPageManager = FindFirstObjectByType<MainPageManager>();
         graveyardManager = FindFirstObjectByType<GraveyardManager>();
+        magicalBookManager = FindFirstObjectByType<MagicalBookManager>();
     }
 
     void Start()
     {
+        // Init file browser
         FileBrowser.SetFilters(true, new FileBrowser.Filter("Text Files", ".txt"));
         FileBrowser.SetDefaultFilter(".txt");
         FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
         FileBrowser.AddQuickLink("Desktop", "C:\\Users\\<user>\\Desktop\\", null);
         FileBrowser.AddQuickLink("Lakeburg Legacy Saves", "C:\\Users\\<user>\\AppData\\LocalLow\\Ishtar Games\\Lakeburg Legacies\\Save\\", null);
+
+        // Load file at start (because we cannot do much without a save file)
         StartCoroutine(LoadFile());
     }
 
@@ -800,34 +806,27 @@ public class LoadJSON : MonoBehaviour
 
         if (FileBrowser.Success)
         {
-            /*
-            // Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
-            for (int i = 0; i < FileBrowser.Result.Length; i++)
-            {
-                Debug.Log(FileBrowser.Result[i]);
-            }
-            */
             StreamReader sr = new StreamReader(FileBrowser.Result[0]);
             string fileContents = sr.ReadToEnd();
             sr.Close();
-
             InitJson(fileContents);
         }
     }
 
     private void InitJson(string saveFileText)
     {
+        // Clear current villager list
         villagersManager.ClearAll();
 
+        // Get data from selected save file
         SaveFile save = new SaveFile();
         string JSONString = saveFileText;
         JSONString = JSONString.Substring(JSONString.IndexOf("{"));
         JSONString = JSONString.Remove(JSONString.Length - 1);
         JsonUtility.FromJsonOverwrite(JSONString, save);
-        // DumpToConsole(save.TownManagerSerialized.VillagerOwnerSerialized.VillagersSerialized[0]);
 
+        // Get villagers and students that are currently in a building slot
         List<string> villagerAtWork = new List<string>();
-
         foreach(BuildingSerialized building in save.TownManagerSerialized.BuildingOwnerSerialized.BuildingsSerialized)
         {
             if (building.BuildingSlotsSerialized != null)
@@ -837,7 +836,6 @@ public class LoadJSON : MonoBehaviour
                     if (slot.VillagerId != null && !slot.VillagerId.Equals("")) villagerAtWork.Add(slot.VillagerId);
                 }
             }
-            
             if(building.StudentSlotsGroupSerialized != null)
             {
                 foreach (StudentSlotsGroupSerialized slotGroup in building.StudentSlotsGroupSerialized)
@@ -853,11 +851,12 @@ public class LoadJSON : MonoBehaviour
             }            
         }
 
+        // Get data for all villagers
         foreach (VillagerSerialized villager in save.TownManagerSerialized.VillagerOwnerSerialized.VillagersSerialized)
         {
+            // Get the liked and disliked topics
             List<string> likedTopics = new List<string>();
             List<string> dislikedTopics = new List<string>();
-
             foreach (TopicSerialized topic in villager.TopicsOwnerSerialized.TopicsSerialized)
             {
                 if(topic.IsLiked == true)
@@ -870,9 +869,10 @@ public class LoadJSON : MonoBehaviour
                 }
             }
 
+            // Check if the villager is currently working
             bool isWorking = villagerAtWork.Contains(villager.IdentitySerialized.Id);
 
-            //Debug.Log(villager.IdentitySerialized.SerializedNames.RomanFirstName + " " + villager.IdentitySerialized.SerializedNames.RomanLastName;
+            // Add villager to the villagers list with all his/her data
             VillagerData v = ScriptableObject.CreateInstance<VillagerData>();
             v.CreateVillager(villager.IdentitySerialized.Id,
                               villager.IdentitySerialized.SerializedNames.RomanFirstName,
@@ -895,15 +895,20 @@ public class LoadJSON : MonoBehaviour
             villagersManager.villagers.Add(v);
         }
 
+        // When all villagers are added, update legacies and init the villagers scrollbar
         villagersManager.UpdateAllVillagers();
         villagersManager.SortVillagersByOldest();
         villagersManager.SearchAllConnections();
         villagersManager.CreateVillagerObjects();
         villagersManager.SetScrollBarLeft();
 
+        // Set the year in several panels
         relativesManager.year.text = save.TimeManagerSerialized.CurrentDate.Substring(0, 4);
-        mainPageManager.ClearDropConteners();
         graveyardManager.year.text = save.TimeManagerSerialized.CurrentDate.Substring(0, 4);
+        magicalBookManager.year.text = save.TimeManagerSerialized.CurrentDate.Substring(0, 4);
+
+        // Init the main page and the graveyard
+        mainPageManager.ClearDropConteners();        
         graveyardManager.UpdateGraveyard();
     }
 

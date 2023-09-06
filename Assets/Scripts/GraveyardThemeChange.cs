@@ -12,7 +12,6 @@ public class GraveyardThemeChange : MonoBehaviour
     public TMP_Text year;
     public Image cross;
 
-    // Start is called before the first frame update
     void Start()
     {
         ThemeManager.ThemeChangeAddListener(ChangeTheme);
