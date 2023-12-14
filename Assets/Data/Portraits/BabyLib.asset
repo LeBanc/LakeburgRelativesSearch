@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e8632ee30542341b9f465644294806, type: 3}
+  m_Name: BabyLib
+  m_EditorClassIdentifier: 
+  emptySprite: {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  face:
+  - {fileID: 21300000, guid: 9e029a986f9e36546bc9a3e806a656ca, type: 3}
+  nose:
+  - {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  mouth:
+  - {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  hair:
+  - {fileID: 21300000, guid: 3cfb2dbca3366bd449397033d217fc09, type: 3}
+  hairBehind:
+  - {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  beard:
+  - {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  eyebrows:
+  - {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  eyes:
+  - {fileID: 21300000, guid: 82a34333a2d9ee944950cb3429752939, type: 3}
+  wrinkles:
+  - {fileID: 21300000, guid: 779b4c1bd86751a4e813b524ef4f33ef, type: 3}
+  over: {fileID: 21300000, guid: 90ddb33083b48544f960fe18cfa644c4, type: 3}
+  skinPalette: {fileID: 21300000, guid: 09df33e70aecd814d9067310baec3f14, type: 3}
+  hairPalette: {fileID: 21300000, guid: 4880cf967806eb24e9c56f8b1c180c34, type: 3}
+  eyePalette: {fileID: 21300000, guid: 9a97c9712a7e68f4a978543119726211, type: 3}
+  mouthPalette: {fileID: 0}

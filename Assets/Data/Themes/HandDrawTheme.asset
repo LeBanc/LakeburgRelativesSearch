@@ -28,6 +28,7 @@ MonoBehaviour:
   cross: {fileID: 21300000, guid: 01633aef035d36d4fa464fcdff316628, type: 3}
   dropdownArrow: {fileID: 21300000, guid: e122179f12626554ea6da7b4de3a294f, type: 3}
   villagerBorder: {fileID: 21300000, guid: fc4a8b884dc3da24cb087325863da310, type: 3}
+  villagerMask: {fileID: 21300000, guid: bb2cfdcebc62b5d4997f23e6c7b45943, type: 3}
   originTown: {fileID: 21300000, guid: 139b67fa5d993ed409b911882d31eaab, type: 3}
   originNeighbour: {fileID: 21300000, guid: 067f7d36acc61f14d89f1c18b867c04a, type: 3}
   originMarriage: {fileID: 21300000, guid: 642e5e88621ff8844b640645811453fa, type: 3}

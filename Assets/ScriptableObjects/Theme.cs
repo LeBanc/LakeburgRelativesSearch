@@ -36,6 +36,8 @@ public class Theme : ScriptableObject
     [SerializeField]
     public Sprite villagerBorder;
     [SerializeField]
+    public Sprite villagerMask;
+    [SerializeField]
     public Sprite originTown;
     [SerializeField]
     public Sprite originNeighbour;

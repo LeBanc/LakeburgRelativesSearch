@@ -100,7 +100,34 @@ public class VillagerData : ScriptableObject
     [SerializeField]
     public string _job = "";
 
-    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age, string origin, List<string> likedTopics, List<string> dislikedTopics, string job, bool isWorking)
+    [SerializeField]
+    public PortraitEnum _portraitLib = PortraitEnum.Baby;
+    [SerializeField]
+    public int _face = 0;
+    [SerializeField]
+    public int _hair = 0;
+    [SerializeField]
+    public int _hairBehind = 0;
+    [SerializeField]
+    public int _eyes = 0;
+    [SerializeField]
+    public int _eyeBrows = 0;
+    [SerializeField]
+    public int _beard = 0;
+    [SerializeField]
+    public int _mouth = 0;
+    [SerializeField]
+    public int _nose = 0;
+    [SerializeField]
+    public int _wrinkles = 0;
+    [SerializeField]
+    public int _skinColor = 0;
+    [SerializeField]
+    public int _hairColor = 0;
+    [SerializeField]
+    public int _eyeColor = 0;
+
+    public void CreateVillager(string id, string firstName, string lastName, bool female, int birthYear, string motherId, string fatherId, string partnerId, string[] childrenId, string[] exesId, bool isDead, bool isExiled, int age, string origin, List<string> likedTopics, List<string> dislikedTopics, string job, bool isWorking, int[] portraitData)
     {
         name = id;
         _id = id;
@@ -217,6 +244,38 @@ public class VillagerData : ScriptableObject
         _job = tempJob;
         if (apprentice) _job = "Apprentice " + _job;
         if (!_job.Equals("") && !isWorking) _job = "(" + _job + ")";
+
+        switch(portraitData[0])
+        {
+            case 0:
+                _portraitLib = PortraitEnum.Baby;
+                break;
+            case 1:
+                _portraitLib = PortraitEnum.Child;
+                break;
+            case 2:
+                _portraitLib = _female ? PortraitEnum.Girl : PortraitEnum.Boy;
+                break;
+            case 3:
+                _portraitLib = _female ? PortraitEnum.Woman : PortraitEnum.Man;
+                break;
+            case 4:
+                _portraitLib = _female ? PortraitEnum.OldWoman : PortraitEnum.OldMan;
+                break;
+        }
+
+        _face = portraitData[1];
+        _hair = portraitData[2];
+        _hairBehind = portraitData[3];
+        _eyes = portraitData[4];
+        _eyeBrows = portraitData[5];
+        _beard = portraitData[6];
+        _mouth = portraitData[7];
+        _nose = portraitData[8];
+        _wrinkles = portraitData[9];
+        _skinColor = portraitData[10];
+        _hairColor = portraitData[11];
+        _eyeColor = portraitData[12];
     }
 
     public enum OriginEnum
@@ -224,5 +283,17 @@ public class VillagerData : ScriptableObject
         Lakeburg,
         Tindra,
         Neighbourhood
+    }
+
+    public enum PortraitEnum
+    {
+        Baby,
+        Child,
+        Boy,
+        Girl,
+        Man,
+        Woman,
+        OldMan,
+        OldWoman
     }
 }

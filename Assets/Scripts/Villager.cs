@@ -14,6 +14,10 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     public Image bloodDrop;
     public Image celib;
     public Image background;
+    public Image jobBack;
+    public Image backMask;
+    public Image backColor;
+    public VillagerPortrait portrait;
 
     public VillagerData villager;
 
@@ -88,6 +92,9 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 
     private void UpdateGraphics()
     {
+        portrait.SetPortraitLib(PortraitManager.GetPortraitLib(villager._portraitLib));
+        portrait.ChangePortrait(villager._face, villager._hair, villager._hairBehind, villager._beard, villager._eyeBrows, villager._eyes, villager._nose, villager._mouth, villager._wrinkles, villager._skinColor, villager._hairColor, villager._eyeColor);
+
         string nameText = villager._firstName + " " + villager._lastName;
         string yearText = villager._birthYear.ToString() + (villager._isDead?(" - " + villager._deathYear + " (" + (villager._deathYear - villager._birthYear) + ")") :(villager._isExiled?" - ?":" (" + (villager._deathYear - villager._birthYear) + ")"));
         villagerName.text = nameText;
@@ -195,7 +202,10 @@ public class Villager : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
             if (villagerName != null) villagerName.color = ThemeManager._registeredTheme.villagerFontColor;
             if (villagerYears != null) villagerYears.color = ThemeManager._registeredTheme.villagerFontColor;
             if (villagerJob != null) villagerJob.color = ThemeManager._registeredTheme.villagerFontColor;
+            if (jobBack != null) jobBack.sprite = ThemeManager._registeredTheme.button;
             if (background != null) background.sprite = ThemeManager._registeredTheme.villagerBorder;
+            if (backColor != null) backColor.color = ThemeManager._registeredTheme.sliderHandleColor;
+            if (backMask != null) backMask.sprite = ThemeManager._registeredTheme.villagerMask;
             if (villager != null)
             {
                 switch (villager._villagerOrigin)

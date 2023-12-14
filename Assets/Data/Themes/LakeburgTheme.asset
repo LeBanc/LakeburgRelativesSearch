@@ -18,7 +18,7 @@ MonoBehaviour:
   relativesTitleFontColor: {r: 0, g: 0, b: 0, a: 1}
   yearFontColor: {r: 0.38039216, g: 0.21568628, b: 0.23137255, a: 1}
   villagerFontColor: {r: 0, g: 0, b: 0, a: 1}
-  sliderHandleColor: {r: 0.96862745, g: 0.8901961, b: 0.80784315, a: 1}
+  sliderHandleColor: {r: 0.99215686, g: 0.8901961, b: 0.827451, a: 1}
   sliderPressedColor: {r: 0.7607843, g: 0.69803923, b: 0.63529414, a: 1}
   sliderFillColor: {r: 0.654902, g: 0.54901963, b: 0.47843137, a: 1}
   relativesBackground: {fileID: 21300000, guid: 37d96db8259193c4cb29478df5697879, type: 3}
@@ -28,6 +28,7 @@ MonoBehaviour:
   cross: {fileID: 21300000, guid: 3a845215bd52071479464e8e8089e061, type: 3}
   dropdownArrow: {fileID: 21300000, guid: 0c354bd63b195604687dc7bc604613cd, type: 3}
   villagerBorder: {fileID: 21300000, guid: 6cf0c3f6407afd948bfad1626025a868, type: 3}
+  villagerMask: {fileID: 21300000, guid: ff5f7dae130a52f4a929da71e6faf618, type: 3}
   originTown: {fileID: 21300000, guid: 0a8509899bed96d4c8793a97919996b0, type: 3}
   originNeighbour: {fileID: 21300000, guid: d276fde71c664e9488539d690ae024fe, type: 3}
   originMarriage: {fileID: 21300000, guid: 47da29c3b95340d488dca281e78d5e11, type: 3}

@@ -872,6 +872,102 @@ public class LoadJSON : MonoBehaviour
             // Check if the villager is currently working
             bool isWorking = villagerAtWork.Contains(villager.IdentitySerialized.Id);
 
+            // Get the dat for portrait
+            PortraitStep _base = villager.IdentitySerialized.PhysicalIdentitySerialize.PortraitIdentity.PortraitStepsSerialized[0];
+            PortraitStep _child = villager.IdentitySerialized.PhysicalIdentitySerialize.PortraitIdentity.PortraitStepsSerialized[2];
+            PortraitStep _old = villager.IdentitySerialized.PhysicalIdentitySerialize.PortraitIdentity.PortraitStepsSerialized[4];
+
+            int _hair, _hairBehind, _eyeBrows, _beard, _eyes, _mouth, _nose, _wrinkles = _nose = _mouth = _eyes = _beard = _eyeBrows = _hairBehind = _hair = 0;
+            int _childHair, _childHairBehind, _childMouth, _childFace = _childMouth = _childHairBehind = _childHair = 0;
+            int _skinColor, _hairColor, _eyeColor, _oldHairColor = _eyeColor = _hairColor = _skinColor = 0;
+
+            int _age;
+            if(villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age > villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.AgeStepsSerialized[4].Age)
+            {
+                _age = 4;
+            }
+            else if (villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age > villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.AgeStepsSerialized[3].Age)
+            {
+                _age = 3;
+            }
+            else if (villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age > villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.AgeStepsSerialized[2].Age)
+            {
+                _age = 2;
+            }
+            else if (villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.Age > villager.IdentitySerialized.PhysicalIdentitySerialize.PhysicalAging.AgeStepsSerialized[1].Age)
+            {
+                _age = 1;
+            }
+            else { _age = 0;}
+
+            foreach (GraphicalElement el in _base.BodyParts)
+            {
+                if (el == null) continue;
+                else if (el.Key == null) continue;
+                else if (el.Key.Equals("Hair")) _hair = el.PortraitInfoIndex;
+                else if (el.Key.Equals("HairBehind")) _hairBehind = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Eye")) _eyes = el.PortraitInfoIndex;
+                else if (el.Key.Equals("EyeBrow")) _eyeBrows = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Beard")) _beard = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Mouse")) _mouth = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Nose")) _nose = el.PortraitInfoIndex;
+            }
+
+            foreach (GraphicalElement el in _base.ColorPalettes)
+            {
+                if (el == null) continue;
+                else if (el.Key == null) continue;
+                else if (el.Key.Equals("Hair")) _hairColor = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Eye")) _eyeColor = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Skin")) _skinColor = el.PortraitInfoIndex;
+            }
+
+            foreach (GraphicalElement el in _child.BodyParts)
+            {
+                if (el == null) continue;
+                else if (el.Key == null) continue;
+                else if (el.Key.Equals("Hair")) _childHair = el.PortraitInfoIndex;
+                else if (el.Key.Equals("HairBehind")) _childHairBehind = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Mouse")) _childMouth = el.PortraitInfoIndex;
+                else if (el.Key.Equals("Face")) _childFace = el.PortraitInfoIndex;
+            }
+
+            foreach (GraphicalElement el in _old.BodyParts)
+            {
+                if (el == null) continue;
+                else if (el.Key == null) continue;
+                else if (el.Key.Equals("Wrinkle")) _wrinkles = el.PortraitInfoIndex;
+            }
+
+            foreach (GraphicalElement el in _old.ColorPalettes)
+            {
+                if (el == null) continue;
+                else if (el.Key == null) continue;
+                else if (el.Key.Equals("Hair")) _oldHairColor = el.PortraitInfoIndex;
+            }
+
+            int[] _portrait;
+            switch (_age)
+            {
+                case 0:
+                    _portrait = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _skinColor, _hairColor, _eyeColor};
+                    break;
+                case 1:
+                    _portrait = new int[] {1, _childFace, _childHair, _childHairBehind, 0, 0, 0, _childMouth, 0, 0, _skinColor, _hairColor, _eyeColor };
+                    break;
+                case 2:
+                    _portrait = new int[] {2, 0, _hair, _hairBehind, _eyes, _eyeBrows, 0, _mouth, _nose, 0, _skinColor, _hairColor, _eyeColor };
+                    break;
+                case 4:
+                    _portrait = new int[] {4, 0, _hair, _hairBehind, _eyes, _eyeBrows, _beard, _mouth, _nose, _wrinkles, _skinColor, _oldHairColor, _eyeColor };
+                    break;
+                default:
+                    _portrait = new int[] {3, 0, _hair, _hairBehind, _eyes, _eyeBrows, _beard, _mouth, _nose, 0, _skinColor, _hairColor, _eyeColor };
+                    break;
+
+            }
+
+
             // Add villager to the villagers list with all his/her data
             VillagerData v = ScriptableObject.CreateInstance<VillagerData>();
             v.CreateVillager(villager.IdentitySerialized.Id,
@@ -891,7 +987,8 @@ public class LoadJSON : MonoBehaviour
                               likedTopics,
                               dislikedTopics,
                               villager.LastWorkId,
-                              isWorking);
+                              isWorking,
+                              _portrait);
             villagersManager.villagers.Add(v);
         }
 
